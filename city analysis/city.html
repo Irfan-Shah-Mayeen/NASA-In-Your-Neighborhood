@@ -59,6 +59,10 @@
         div{
             text-align:right;
         }
+
+        irfan{
+            color:aliceblue;
+        }
        
     
       
@@ -73,10 +77,10 @@
 <body>
 
     <nav>
-    <a href="#">Home </a>
+    <a href="/home.html">Home </a>
     <a href="/features\feature.html">Features</a>
-    <a href="/weather.html">Weather</a>
-    <a href="city analysis/city.html">City-Analysis</a>
+    <a href="/weather/weather.html">Weather</a>
+    <a href="/city analysis/city.html">City-Analysis</a>
     <a href="#">Map</a>
     <a href="#">About</a>
     <a href="#">Team</a>
@@ -89,12 +93,12 @@
     <style>
         body
         {
-        background-image: url("blu_back.jpg");
+        background-image: url("blueworld.gif");
         }
         </style>
 
-
-    <label>Land Area:</label><br>
+     <irfan>
+    <label>Land Area(sq-km):</label><br>
     <input type="text" id="irName"><br>
 
     <label>Population:</label><br>
@@ -103,12 +107,16 @@
     <label>Vehicle:</label><br>
     <input type="text" id="utName"><br>
 
-    <label>Factories:</label><br>
+    <label>Factories Carbon dioxide (kg):</label><br>
     <input type="text" id="asName"><br>
 
-    
+</irfan>
 
-    <button id="myButton">Submit</button><br>
+   
+
+    <p><br></p>
+     
+    <button id="myButton">Analysis</button><br>
 
    
 
@@ -120,21 +128,62 @@
 
     <script>
         document.getElementById("myButton").onclick = function () {
-            var ir = document.getElementById("irName").value;
-            var ni = document.getElementById("niName").value;
-            var ut = document.getElementById("utName").value;
-            var as = document.getElementById("asName").value;
+            var area = document.getElementById("irName").value;
+            var population =document.getElementById("niName").value;
+            var vehicle = document.getElementById("utName").value;
+            var factory = document.getElementById("asName").value;
+            factory=factory*1.0;
+           
 
-            var xValues = ["Land_Area", "Population", "Vehicles", "Factories"];
-            var yValues = [ir, ni, ut,as];
+            var population_desnsity = area/population;
+            var population_co2_emission= population*373.150;
+            
+            var vechicle_co2_emission = 4600*vehicle
+            
+            var total_co2_emission = population_co2_emission + vechicle_co2_emission ;
+             total_co2_emission = total_co2_emission +factory;
+
+            
+            var tree = total_co2_emission / 10;
+           
+            var total_land_area_needed = ((tree / 250)/247.105);
+            
+
+            
+            
+             
+              
+
+
+
+
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
+
+
+            var xValues = [ "Population", "Vehicles", "Factories"];
+            var yValues = [population_co2_emission,vechicle_co2_emission,factory];
 
             var barColors = [
                 "#b91d47",
                 "#00aba9",
+                "#e8c3b9"
                 
-                  "#e8c3b9",
-                "#2b5797",
-                "#1e7145"
             ];
 
             new Chart("myChart", {
@@ -156,8 +205,26 @@
 
 
         // for pie chart 
-            var he=80;
-            var unhe=20;
+        var he,unhe;
+
+
+            var Ideal_tree_need = area*0.2;
+
+            if(Ideal_tree_need >= total_land_area_needed) { 
+                 he=100;
+                 unhe=0;
+
+            }
+
+            else{
+                
+                unhe =  (total_land_area_needed -Ideal_tree_need)/total_land_area_needed*100;
+                he=100-unhe;
+               
+            }
+
+
+            
 
             var xhoru = ["Healthy", "Unhealthy"];
             var yhoru = [he, unhe];
