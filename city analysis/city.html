@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+          font-family: sans-serif;
+          background-image: url("images/home_background.png");
+         
+          
+          background-repeat: no-repeat; 
+          background-size: cover; 
+          
+        }
+    
+        header {
+          display: flex;
+          justify-content: space-between;
+          align-items: left;
+          padding: 1rem;
+          
+        }
+    
+       
+    
+        nav {
+          flex: 1;
+          text-align: left;
+          
+        }
+    
+        nav a {
+          display: inline-block;
+          padding: 0.5rem;
+          text-decoration: none;
+          color: #ffffff;
+        }
+    
+        nav a:hover {
+          background-color: #9e3030;
+        }
+    
+        input[type="search"] {
+          padding: 0.5rem;
+          border: 1px solid #ccc;
+          border-radius: 0.25rem;
+        }
+    
+        main {
+          padding: 1rem;
+        }
+    
+       
+    
+        img {
+          width: 50%;
+          margin-bottom: 1rem;
+        }
+    
+        div{
+            text-align:right;
+        }
+       
+    
+      
+    
+        
+    
+       
+      </style>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+</head>
+<body>
+</body>
+    <nav>
+    <a href="#">Home </a>
+    <a href="/features\feature.html">Features</a>
+    <a href="/weather.html">Weather</a>
+    <a href="city analysis/city.html">City-Analysis</a>
+    <a href="#">Map</a>
+    <a href="#">About</a>
+    <a href="#">Team</a>
+    <a href="#">Connect</a>
+    <div> <input type="search"    placeholder="Search..."></div>
+   
+    </nav>
+    <br><br><br>
+
+    <style>
+        body
+        {
+        background-image: url("blu_back.jpg");
+        }
+        </style>
+
+
+    <label>Land Area:</label><br>
+    <input type="text" id="irName"><br>
+
+    <label>Population:</label><br>
+    <input type="text" id="niName"><br>
+
+    <label>Vehicle:</label><br>
+    <input type="text" id="utName"><br>
+
+    <label>Factories:</label><br>
+    <input type="text" id="asName"><br>
+
+    
+
+    <button id="myButton">Submit</button><br>
+
+   
+
+    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>  <canvas id="myChart2" style="width:100%;max-width:600px"></canvas>
+    
+   
+
+    <canvas id="myChart3" style="width:100%;max-width:600px"></canvas>
+
+    <script>
+        document.getElementById("myButton").onclick = function () {
+            var ir = document.getElementById("irName").value;
+            var ni = document.getElementById("niName").value;
+            var ut = document.getElementById("utName").value;
+            var as = document.getElementById("asName").value;
+
+            var xValues = ["Land_Area", "Population", "Vehicles", "Factories"];
+            var yValues = [ir, ni, ut,as];
+
+            var barColors = [
+                "#b91d47",
+                "#00aba9",
+                
+                  "#e8c3b9",
+                "#2b5797",
+                "#1e7145"
+            ];
+
+            new Chart("myChart", {
+                type: "doughnut",
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: barColors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "our analysis For your city"
+                    }
+                }
+            });
+
+
+        // for pie chart 
+            var he=80;
+            var unhe=20;
+
+            var xhoru = ["Healthy", "Unhealthy"];
+            var yhoru = [he, unhe];
+
+
+
+        var pieColors = [
+                 "#008000",
+                "#b91d47",
+                "#00aba9",
+                "#2b5797",
+                "#e8c3b9",
+                "#1e7145"
+            ];
+
+            new Chart("myChart2", {
+                type: "pie", // Change chart type to pie
+                data: {
+                    labels: xhoru,
+                    datasets: [{
+                        backgroundColor: pieColors,
+                        data: yhoru
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "Healthy and Unhelthy analysis"
+                    }
+                }
+            });
+
+
+
+            //bar 
+
+            
+        var pieColors = [
+                "#b91d47",
+                "#00aba9",
+                "#2b5797",
+                "#e8c3b9",
+                "#1e7145"
+            ];
+
+            new Chart("myChart3", {
+                type: "bar", // Change chart type to pie
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: pieColors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "View your data"
+                    }
+                }
+            });
+        }
+
+
+        
+    </script>
+</body>
+</html>
