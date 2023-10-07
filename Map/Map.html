@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Live Map with Weather and Location</title>
+   
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@1.13.0/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder@1.13.0/dist/Control.Geocoder.js"></script>
+   
+    <style>
+       
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+
+        body {
+      font-family: sans-serif;
+      background-image: url("blu_back.jpg");
+     
+      
+      background-repeat: no-repeat; 
+      background-size: cover; 
+      
+    }
+
+
+
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <div id="location-info">
+        <h2>Location Information</h2>
+        <p id="location-details">Select a location on the map to see location and weather information.</p>
+    </div>
+
+    <script>
+        var map = L.map('map').setView([51.505, -0.09], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var marker = L.marker([51.5, -0.09]).addTo(map)
+            .bindPopup('A sample location.');
+
+        var searchControl = L.Control.geocoder({
+            defaultMarkGeocode: false,
+        }).addTo(map);
+
+        searchControl.on('markgeocode', function (e) {
+            var latlng = e.geocode.center;
+            marker.setLatLng(latlng);
+            map.setView(latlng, 13);
+
+          
+            fetchLocationAndWeather(latlng.lat, latlng.lng);
+        });
+
+        function fetchLocationAndWeather(lat, lon) {
+           
+            var locationApiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+
+            fetch(locationApiUrl)
+                .then(response => response.json())
+                .then(locationData => {
+                    var locationName = locationData.display_name;
+                    document.getElementById('location-details').textContent = `Location: ${locationName}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching location data:', error);
+                });
+
+            
+            var apiKey = 'YOUR_OPENWEATHERMAP_API_KEY'; 
+            var weatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+            fetch(weatherApiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    var description = data.weather[0].description;
+                    var temperature = data.main.temp;
+
+                    document.getElementById('location-details').textContent += ` | Weather: ${description}, Temperature: ${temperature}°C`;
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                });
+        }
+    </script>
+</body>
+</html>
