@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA EONET Events</title>
+   
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+    
+        #map {
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+       
+        const map = L.map('map').setView([0, 0], 2); 
+
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        fetch('https://eonet.sci.gsfc.nasa.gov/api/v3/events')
+            .then((response) => response.json())
+            .then((data) => {
+               
+                data.events.forEach((event) => {
+                    const { id, title, geometry } = event;
+                    if (geometry && geometry.length > 0) {
+                        const [lng, lat] = geometry[0].coordinates;
+                        L.marker([lat, lng])
+                            .addTo(map)
+                            .bindPopup(`<b>${title}</b>`)
+                            .openPopup();
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error('Error fetching NASA EONET data:', error);
+            });
+    </script>
+</body>
+</html>
